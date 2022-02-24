@@ -1,0 +1,1 @@
+# aws-vm-templates

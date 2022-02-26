@@ -15,17 +15,21 @@ provider "aws" {
 }
 
 resource "aws_instance" "app_server" {
+
+  count = 3
+
   ami           = "ami-08cfb7b19d5cd546d"
   instance_type = "t2.micro" 
-  key_name = "macOS-key"
+  key_name      = "macOS-key"
 
   tags = {
-    Name = "ExampleAppServerInstance"
+    Name = "ExampleAppServerInstance-${count.index}"
   }
 }
 
 resource "aws_eip" "ip" {
-  instance = aws_instance.app_server.id
+  count    = 3
+  instance = element(aws_instance.app_server.*.id, count.index)
   vpc      = true
 }
 
